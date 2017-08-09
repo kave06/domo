@@ -29,6 +29,7 @@ def hello_world1():
         horas.append(i)
 
     print(horas)
+    # print('hola')
 
     # return json.dumps(temps)
     return render_template('grafica.html', temperaturas=temps, listaEjeX=horas)
