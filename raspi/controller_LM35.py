@@ -5,7 +5,7 @@ import pymysql.cursors
 import pymysql
 from time import localtime
 from pymysql import MySQLError
-from sensors.loggers.logger import create_log
+from modules.logger import create_log
 from time import sleep
 from re import match
 
@@ -44,6 +44,7 @@ def send_data_db(cnx: pymysql.connect, line_list: list):
         cursor.close()
     except MySQLError as err:
         logger.error(err)
+        logger.findCaller(stack_info=True)
 
 
 def read_arduino(ser: serial.Serial(), cnx: pymysql.connect) -> list:
@@ -70,6 +71,7 @@ def read_arduino(ser: serial.Serial(), cnx: pymysql.connect) -> list:
                 logger.info('Reset ser from bad line Arduino')
     except Exception as err:
         logger.error(err)
+        logger.findCaller(stack_info=True)
     return line_list
 
 
@@ -80,6 +82,7 @@ def connect_db() -> pymysql.connect:
         logger.info('Connect to DB: ' + DB_NAME)
     except MySQLError as err:
         logger.error(err)
+        logger.findCaller(stack_info=True)
     return cnx
 
 
@@ -92,6 +95,7 @@ def connect_arduino() -> serial.Serial():
     except Exception:
         err = sys.exc_info()[0]
         logger.error(err)
+        logger.findCaller(stack_info=True)
     return ser
 
 
