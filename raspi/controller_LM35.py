@@ -10,7 +10,7 @@ from time import sleep
 from re import match
 
 logger = create_log()
-
+# hola# hola# hola
 # Global variables
 DB_HOST = '157.88.58.134'
 DB_PORT = 5584
@@ -19,15 +19,18 @@ DB_PASS = 'hola'
 DB_NAME = 'cliente1'
 ARD_SERIAL_PORT = '/dev/ttyACM0'  # serial port connection Arduino
 ARD_BD = 9600
-
+FLAG_RECONNECT = False
 
 def main():
-    cnx = connect_db()
-    ser = connect_arduino()
-
     while True:
-        line_list = read_arduino(ser, cnx)
-        send_data_db(cnx, line_list)
+        FLAG_RECONNECT = False
+        cnx = connect_db()
+        ser = connect_arduino()
+
+        while FLAG_RECONNECT == False:
+            line_list = read_arduino(ser, cnx)
+            send_data_db(cnx, line_list)
+        logger.info('Out of loop')
 
 
 def send_data_db(cnx: pymysql.connect, line_list: list):
@@ -35,6 +38,11 @@ def send_data_db(cnx: pymysql.connect, line_list: list):
         id = line_list[0]
         sensor_num = line_list[1]
         value = line_list[2]
+    except Exception as err:
+        logger.error(err)
+        logger.findCaller(stack_info=True)
+        # TODO call to read_arduino??
+    try:
         query = "INSERT INTO reading(id, sensor_num, value, time)" \
                 "VALUES (%s, %s, %s, %s)"
         args = [id, sensor_num, value, localtime()]
@@ -45,6 +53,14 @@ def send_data_db(cnx: pymysql.connect, line_list: list):
     except MySQLError as err:
         logger.error(err)
         logger.findCaller(stack_info=True)
+        if err[0] == 2013:
+            FLAG_RECONNECT = True
+
+
+# (2013, 'Lost connection to MySQL server during query ([Errno 110] Connection timed out)')
+
+
+
 
 
 def read_arduino(ser: serial.Serial(), cnx: pymysql.connect) -> list:

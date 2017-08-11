@@ -9,9 +9,10 @@ DB_NAME = 'cliente1'
 
 logging.basicConfig(filename='lm35_2.log',
                     level=logging.DEBUG,
-                    format='%(asctime)s %(levelname)-8s %(message)s')
+                    filemode='w',
+                    # format='%(asctime)s %(levelname)-8s %(message)s')
                     # format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-# format='%(asctime)s %(levelname)-8s %(message)s',filemode='w')
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 
 
 
