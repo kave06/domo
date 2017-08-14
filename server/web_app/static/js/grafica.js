@@ -11,7 +11,8 @@ function dibujar_grafica_temperatura(titulo, subtitulo,
             text: subtitulo
         },
         xAxis: {
-            categories: listaEjeX
+            // categories: listaEjeX
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         },
         yAxis: {
             title: {
