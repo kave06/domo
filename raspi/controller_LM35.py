@@ -8,7 +8,6 @@ from pymysql import MySQLError
 from modules.logger import create_log
 from time import sleep
 from re import match
-import logging
 
 logger = create_log()
 
@@ -31,9 +30,7 @@ def main():
         while FLAG_RECONNECT == False:
             line_list = read_arduino(ser, cnx)
             send_data_db(cnx, line_list)
-        # logger.info('Flag main before change: {}'.format(FLAG_RECONNECT))
         FLAG_RECONNECT = False
-        # logger.info('Flag main after change: {}'.format(FLAG_RECONNECT))
 
 
 def read_arduino(ser: serial.Serial(), cnx: pymysql.connect) -> list:
@@ -44,9 +41,6 @@ def read_arduino(ser: serial.Serial(), cnx: pymysql.connect) -> list:
         line = ser.readline()
         line_2 = line.decode('utf-8')
         if match(regex, line_2):
-            # line_list.append(int(line.split()[0]))
-            # line_list.append(int(line.split()[1]))
-            # line_list.append(float(line.split()[2]))
             line_list[0] = (int(line.split()[0]))
             line_list[1] = (int(line.split()[1]))
             line_list[2] = (float(line.split()[2]))
@@ -82,7 +76,6 @@ def send_data_db(cnx: pymysql.connect, line_list: list):
             cnx.close()
             FLAG_RECONNECT = True
             # logger.error(err.args[0])
-            # logger.findCaller(stack_info=True)
             if err.args[0] == 2013:
                 logger.info('Flag: {}'.format(FLAG_RECONNECT))
     else:
@@ -97,7 +90,6 @@ def connect_db() -> pymysql.connect:
         logger.info('Connect to DB: ' + DB_NAME)
     except MySQLError as err:
         logger.error(err)
-        #logger.findCaller(stack_info=True)
     return cnx
 
 
@@ -110,7 +102,6 @@ def connect_arduino() -> serial.Serial():
     except Exception:
         err = sys.exc_info()[0]
         logger.error(err)
-        #logger.findCaller(stack_info=True)
     return ser
 
 
