@@ -1,5 +1,5 @@
 function dibujar_grafica_temperatura(titulo, subtitulo,
-                                     listaEjeX, series) {
+                                     xAxis, series) {
     Highcharts.chart('container', {
         chart: {
             type: 'line'
@@ -10,13 +10,10 @@ function dibujar_grafica_temperatura(titulo, subtitulo,
         subtitle: {
             text: subtitulo
         },
-        xAxis: {
-            // categories: listaEjeX
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        },
+        xAxis: xAxis,
         yAxis: {
             title: {
-                text: 'Temperatura (°C)'
+                text: 'Temperature (°C)'
             }
         },
         plotOptions: {

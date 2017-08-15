@@ -2,15 +2,17 @@ import json
 from flask import Flask
 # from flask_script import Manager
 from flask.templating import render_template
-from multiprocessing import managers
+# from multiprocessing import managers
 
-from pip._vendor.cachecontrol import controller
+# from pip._vendor.cachecontrol import controller
 
-from server.web_app import persistence
-from datetime import datetime
+# from server.web_app import persistence
+# from datetime import datetime
 from datetime import timedelta
+from datetime import date
 
 from server.web_app.persistence import get_temperatures_from_to
+from server.web_app.persistence import get_hours_from_to
 from raspi.controller_LM35 import connect_db
 
 app = Flask(__name__)
@@ -23,27 +25,21 @@ app = Flask(__name__)
 @app.route('/grafica/')
 # def hello_world1(horas):
 def hello_world1():
-    now = datetime.now()
-    # fd = now - timedelta(hours=horas)
-    fd = now - timedelta(1)
-    temps = get_temperatures_from_to(cnx, fd, now)
-    #temps = persistence.get_all_temperatures(conn, from_date=fd, to_date=now)
-    print(temps.__sizeof__())
-    horas = []
-    for i in range(0, 24, 2):
-        horas.append(i)
-
-    print(horas)
-    # print('hola')
+    today = date.today()
+    # fd = today - timedelta(hours=horas)
+    fd = today - timedelta(days=1)
+    temps = get_temperatures_from_to(cnx, fd, today)
+    hours = get_hours_from_to(cnx, fd, today)
+    print(temps.__len__())
+    print(hours.__len__())
+    print(hours)
+    #temps = persistence.get_all_temperatures(conn, from_date=fd, to_date=today)
 
     # return json.dumps(temps)
-    return render_template('grafica.html', temperaturas=temps, listaEjeX=horas)
-    #return render_template('grafica.html', temperaturas=temps, listaEjeX=horas)
-    # return 'hello world'
+    return render_template('grafica.html', temperaturas=temps, listaEjeX=hours)
 
 
 if __name__ == '__main__':
-    # conn = persistence.crear_conexiones()
     cnx = connect_db()
 
     app.run()

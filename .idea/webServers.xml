@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="5db71399-ec87-42d8-a85d-df42e7dee6bd" name="Server" url="http://157.88.58.134:5585/">
+        <fileTransfer host="157.88.58.134" port="5580" rootFolder="/home/kave" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="5580" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
