@@ -43,8 +43,6 @@ def get_temperatures_from_to(cnx: connect,
     cursor = cnx.cursor()
     cursor.execute(query)
 
-    # print([r[0] for r in cursor])
-
     result_set = [r[0] for r in cursor]
 
     return result_set
@@ -58,8 +56,8 @@ def get_hours_from_to(cnx: connect,
             "SELECT DATE (time) t_date, MIN(time) t_time " \
             "FROM reading " \
             "GROUP BY DATE(time), HOUR(time) " \
-            "HAVING t_date BETWEEN '2017-08-01' AND '2017-08-02'" \
-            ") T ON T.t_time = R.time "
+            "HAVING t_date BETWEEN '{}' AND '{}'" \
+            ") T ON T.t_time = R.time ".format(from_date, to_date)
 
     cursor = cnx.cursor()
     cursor.execute(query)

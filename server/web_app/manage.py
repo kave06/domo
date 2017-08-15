@@ -32,7 +32,6 @@ def hello_world1():
     hours = get_hours_from_to(cnx, fd, today)
     print(temps.__len__())
     print(hours.__len__())
-    print(hours)
     #temps = persistence.get_all_temperatures(conn, from_date=fd, to_date=today)
 
     # return json.dumps(temps)
